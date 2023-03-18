@@ -18,7 +18,7 @@ function App() {
           setdata(data);
         }
       } catch (error) {
-        console.log(error);
+      
       }
     };
     getData();
