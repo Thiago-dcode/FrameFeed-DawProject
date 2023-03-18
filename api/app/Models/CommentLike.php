@@ -7,5 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class CommentLike extends Model
 {
-    use HasFactory;
+    use HasFactory,HasFactory;
+    protected $guarded = [];
+
+    public function author(){
+
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function comment(){
+
+        return $this->belongsTo(Comment::class);
+    }
+
+
 }
