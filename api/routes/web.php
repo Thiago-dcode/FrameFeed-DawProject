@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+
+use function Webmozart\Assert\Tests\StaticAnalysis\length;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get('/', function () {
+
+    $files = Storage::disk('public')->allFiles('postImages');
+    
+
+    foreach ($files as $key => $file) {
+        Storage::move($file, "postFactoryImages/image-$key.jpg");
+    }
+    dd($files);
+   
     return view('welcome');
 });

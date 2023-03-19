@@ -2,12 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PostLike>
  */
-class CategoryFactory extends Factory
+class PostLikeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +19,9 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->unique()->word(),
+            'user_id' => User::all()->random()->id,
+            'post_id' => Post::all()->random()->id,
+
         ];
     }
 }

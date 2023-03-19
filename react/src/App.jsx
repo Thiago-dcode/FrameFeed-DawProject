@@ -4,53 +4,36 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 
 function App() {
-  const [data, setdata] = useState("");
-  const [img, setImg] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await fetch("http://127.0.0.1:8000/api/posts");
+  useEffect(() => {}, []);
 
-        const data = await res.json();
-        if (res.ok) {
-          console.log(data);
-          setdata(data);
-        }
-      } catch (error) {
-      
-      }
-    };
-    getData();
-
-    const getImg = async () => {
-      try {
-        const res = await fetch("http://127.0.0.1:8000/api/img");
-
-        const data = await res.json();
-        if (res.ok) {
-          console.log(data.img);
-          setImg(data.img);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getImg();
-  }, []);
+  const login =  (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+   console.log(import.meta.env.VITE_API_BASE_URL)
+  };
 
   return (
     <div className="App">
-      {data &&
-        data.map((obj) => {
-          return (
-            <div>
-              <p style={{ color: "wheat" }}>{obj.msg}</p>
-            </div>
-          );
-        })}
-
-      {img && <img src="http://127.0.0.1:8000/bd02desarrollo.jpg" alt="" />}
+      <h2>Log In</h2>
+      <form action="" onSubmit={(e) => login(e)}>
+        <input
+          placeholder="Username"
+          type="text"
+          name="username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          placeholder="Password"
+          type="password"
+          name="password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button>Login</button>
+      </form>
     </div>
   );
 }
