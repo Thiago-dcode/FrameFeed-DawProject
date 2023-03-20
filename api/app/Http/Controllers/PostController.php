@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
+use App\Traits\HttpResponses;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use App\Traits\HttpResponses;
 
 class PostController extends Controller
 {
@@ -16,7 +17,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        
+        $posts = Post::latest()->paginate(9);
+
+        return response()->json($posts);
     }
 
     /**
@@ -24,7 +27,19 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+
+        $title = fake()->unique()->sentence();
+        $slug = str_replace(' ', '-', $title);
+        $post = Post::create([
+            'user_id' => User::all()->random()->id,
+            'image' =>  env('POST_IMAGES') . "/postImages/1.jpg",
+            'title' => $title,
+            'slug' => $slug,
+            'excerpt' => fake()->sentence(),
+            'body' => implode('. ', fake()->paragraphs()),
+        ]);
+        
+        return response()->json($post);
     }
 
     /**

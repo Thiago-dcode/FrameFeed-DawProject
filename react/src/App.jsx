@@ -1,39 +1,76 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useEffect, useRef, useState } from "react";
+import api from "./axios-client";
 import "./App.css";
 
 function App() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [url, setUrl] = useState("/posts");
+  const [currentPage, setCurrentPage] = useState();
+  const [lastPage, setLastPage] = useState();
+  const [posts, setPosts] = useState([]);
+  const [cardClass, setCardClass] = useState("");
 
-  useEffect(() => {}, []);
+  const getPosts = async () => {
+    try {
+      const response = await api.get(url);
 
-  const login =  (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-   console.log(import.meta.env.VITE_API_BASE_URL)
+      setPosts([...posts, ...response.data.data]);
+      setCurrentPage(response.data.current_page);
+      setLastPage(response.data.last_page);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+  const setClass = (e) => {
+    if (e) {
+      if (e.naturalWidth > e.naturalHeight) {
+        setCardClass("card-wide");
+        console.log(e);
+        console.log(e.naturalWidth);
+        console.log(e.height);
+      } 
+      else setCardClass('card-tall')
+    }
+  };
+
+  const login = (e) => {
+    e.preventDefault();
+
+    console.log(import.meta.env.VITE_API_BASE_URL);
+  };
+  const morePosts = () => {
+    if (currentPage !== lastPage) {
+      setUrl(`/posts?page=${currentPage + 1}`);
+      getPosts();
+    }
+  };
+
+  useEffect(() => {
+    setPosts([]);
+    getPosts();
+  }, []);
 
   return (
     <div className="App">
-      <h2>Log In</h2>
-      <form action="" onSubmit={(e) => login(e)}>
-        <input
-          placeholder="Username"
-          type="text"
-          name="username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          placeholder="Password"
-          type="password"
-          name="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button>Login</button>
-      </form>
+      <div className="gallery-container">
+        {posts &&
+          posts.map((post, i) => {
+            return (
+              <div className={`gallery-element ${post.image_shape === 'vertical'? 'card-tall': 'card-wide'}`} key={i}>
+              
+                <img
+                  ref={(e) => {
+                    setClass(e);
+                  }}
+                  src={post.image}
+                  alt=""
+                />
+              
+               
+              </div>
+            );
+          })}
+      </div>
+      <button onClick={morePosts}>more posts</button>
     </div>
   );
 }

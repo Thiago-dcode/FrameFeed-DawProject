@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Stmt\Goto_;
 
 use function Webmozart\Assert\Tests\StaticAnalysis\length;
 
@@ -20,13 +21,24 @@ use function Webmozart\Assert\Tests\StaticAnalysis\length;
 
 Route::get('/', function () {
 
-    $files = Storage::disk('public')->allFiles('postImages');
-    
 
-    foreach ($files as $key => $file) {
-        Storage::move($file, "postFactoryImages/image-$key.jpg");
-    }
-    dd($files);
-   
+    //     $images = Storage::disk('local')
+    //     ->allFiles('public/postFactoryImages');
+
+
+
+    // //Renaming all the images
+    // foreach ($images as $i => $image) {
+
+
+    //     Storage::move($image, "postFactoryImages/image-{$i}.jpg");
+    // }
+
+    // dd($images);
+
+
+    
+        
+
     return view('welcome');
 });

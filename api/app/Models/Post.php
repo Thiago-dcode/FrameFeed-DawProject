@@ -10,6 +10,7 @@ class Post extends Model
 {
     use HasFactory, HasApiTokens;
     protected $guarded = [];
+    protected $with = ['author', 'likes'];
 
     public function categories()
     {
