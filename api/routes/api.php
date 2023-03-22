@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SessionController;
 use App\Models\Post;
@@ -25,6 +26,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/posts', [PostController::class, 'index']);
+
 Route::get('/posts/create', [PostController::class, 'create']);
+
+Route::get('/categories',[CategoryController::class, 'index']);
 
 Route::post('/login',[SessionController::class,'store']);
