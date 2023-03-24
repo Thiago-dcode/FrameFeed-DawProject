@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import api from "../api/api";
+import Categories from "../api/Categories";
 import LoadMore from "./LoadMore";
-export default function SearchByCategory({ title,categoriesSelected,categorySelected,removeCategorySelected }) {
+export default function SearchByCategory({ title,categoriesSelected,handleQuery }) {
   const [categories, setCategories] = useState([]);
  
   const [currentPage, setCurrentPage] = useState(1);
@@ -9,11 +9,11 @@ export default function SearchByCategory({ title,categoriesSelected,categorySele
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const getCategories = async (url) => {
+  const getCategories = async (url ='') => {
     try {
-      console.log(categories);
+      
       setIsLoading(true);
-      const response = await api.get(url);
+      const response = await Categories.get(url);
 
       setCategories([...categories, ...response.data.data]);
       setCurrentPage(response.data.current_page);
@@ -28,13 +28,14 @@ export default function SearchByCategory({ title,categoriesSelected,categorySele
     if (currentPage === lastPage) {
       return;
     }
-    getCategories("/categories?page=" + (currentPage + 1));
+    const page = currentPage +1
+    getCategories("?page=" + page);
   };
 
   
 
   useEffect(() => {
-    getCategories("/categories");
+    getCategories();
   }, []);
   return (
     <div className="search-categories">
@@ -42,7 +43,7 @@ export default function SearchByCategory({ title,categoriesSelected,categorySele
       {categoriesSelected !== 0 && (
         <div className="categories-selected">
           {categoriesSelected.map((category, i) => {
-            return <button onClick={()=>{removeCategorySelected(category)}} key={i}>{category}</button>;
+            return <button onClick={()=>{handleQuery(category,false)}} key={i}>{category}</button>;
           })}
         </div>
       )}
@@ -55,7 +56,7 @@ export default function SearchByCategory({ title,categoriesSelected,categorySele
               return (
                 <button
                   onClick={() => {
-                    categorySelected(category.name);
+                    handleQuery(category.name);
                   }}
                  
                   key={i}

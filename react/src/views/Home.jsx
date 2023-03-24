@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
-import api from "../api/api";
+import Posts from "../api/Posts";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass as lupa } from "@fortawesome/free-solid-svg-icons";
@@ -9,31 +9,25 @@ import GalleryGrid from "../components/GalleryGrid";
 import LoadMore from "../components/LoadMore";
 
 export default function Home() {
-  const [url, setUrl] = useState("/posts?page=1");
-  const [currentPage, setCurrentPage] = useState();
-  const [lastPage, setLastPage] = useState();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState();
+  const [lastPage, setLastPage] = useState();
+  const [queryString, setQueryString] = useState({
+    page: "?page=1",
+  });
+  const [search, setSearch] = useState("");
   const [categoriesSelected, setCategoriesSelected] = useState([]);
 
-  // filtering posts by category
+  const inputRef = useRef("");
 
-
-  const categorySelected = (categoryName) => {
-      setCategoriesSelected([...categoriesSelected, categoryName]);
-    };
-    const removeCategorySelected =(categoryName) =>{
-  
-      const categoryRemoved = categoriesSelected.filter(category => category!== categoryName)
-      setCategoriesSelected(categoryRemoved)
-  
-    }
-
-  const getPosts = async () => {
+  //fetching posts
+  const getPosts = async (url = "") => {
     try {
       setIsLoading(true);
-      const response = await api.get(url);
+
+      const response = await Posts.get(url);
 
       setPosts([...posts, ...response.data.data]);
       setCurrentPage(response.data.current_page);
@@ -46,60 +40,122 @@ export default function Home() {
     }
   };
 
-  const morePosts = () => {
-    if (currentPage !== lastPage) {
-      setUrl(`/posts?page=${currentPage + 1}`);
-      getPosts();
+  // add or remove a category from categories Selected
+  const handleCategoryQuery = (categoryName, more = true) => {
+    if (more) setCategoriesSelected([...categoriesSelected, categoryName]);
+    else {
+      const categoryRemoved = categoriesSelected.filter(
+        (category) => category !== categoryName
+      );
+      setCategoriesSelected(categoryRemoved);
     }
   };
 
-  useEffect(() => {
-    setPosts([]);
+  //fetch the next page of post.
+  const morePosts = () => {
+    if (currentPage !== lastPage) {
+      const nextPage = "?page=" + (currentPage + 1);
+      setQueryString((prevQuery) => {
+        return { ...prevQuery, page: nextPage };
+      });
+    }
+  };
 
+  //fetch posts by a search
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!inputRef.current.value) return;
+    setSearch(inputRef.current.value);
+    inputRef.current.value = "";
+  };
+
+  useEffect(() => {
     getPosts();
   }, []);
-  useEffect(()=>{
-    const length = categoriesSelected.length
-    if(length===0) return
-      let categoryQueryString = '&category=' + categoriesSelected.reduce((acc,category)=>{
-        
-        
 
-        
-          return acc + category + '&'
+  useEffect(() => {
+    //build query string for categories based on categoriesSelected
 
+    if (categoriesSelected.length === 0) {
+      setPosts([]);
+      setQueryString((prevQuery) => {
+        return { ...prevQuery, page: `?page=1`, category: "" };
+      });
+      return;
+    }
 
-      },'')
-    
-      categoryQueryString = categoryQueryString.substring(0, categoryQueryString.length-1)
-      console.log(categoryQueryString)
-      console.log(url)
+    let length = categoriesSelected.length;
+    let categoryQueryString =
+      "&category[]=" +
+      categoriesSelected.reduce((acc, category) => {
+        if (categoriesSelected[length - 1] === category) {
+          return acc + category;
+        }
+        return acc + category + "&" + "category[]=";
+      }, "");
+    setPosts([]);
 
-  },[categoriesSelected])
+    setQueryString((prevQuery) => {
+      return { ...prevQuery, page: "?page=1", category: categoryQueryString };
+    });
+  }, [categoriesSelected]);
+
+  useEffect(() => {
+    setPosts([]);
+    setQueryString((prevQuery) => {
+      return { ...prevQuery, search: `&search=${search}` };
+    });
+  }, [search]);
+
+  useEffect(() => {
+    let url = "";
+    for (const key in queryString) {
+      url += queryString[key];
+    }
+
+    console.log(url);
+
+    getPosts(url);
+  }, [queryString]);
 
   return (
     <div className="home">
       <header>
         <div className="search-input">
-          <input type="text" placeholder="Type something" />
-          <div className="icon-div">
-            <FontAwesomeIcon
-              className="icon"
-              icon={lupa}
-              style={{ color: "#ffffff" }}
-            />
-          </div>
+          {search && (
+            <div className="search">
+              <p>Your search:</p>
+              <button onClick={() => setSearch("")}>{search}</button>
+            </div>
+          )}
+          <form onSubmit={(e) => handleSearch(e)} className="form">
+            <input ref={inputRef} type="text" placeholder="Type something" />
+            <button type="submit" className="icon-div">
+              <FontAwesomeIcon
+                className="icon"
+                icon={lupa}
+                style={{ color: "#ffffff" }}
+              />
+            </button>
+          </form>
         </div>
 
-        <SearchByCategory title={"Filter by categories"} categoriesSelected={categoriesSelected} categorySelected ={categorySelected} removeCategorySelected= {removeCategorySelected} />
+        <SearchByCategory
+          title={"Filter by categories"}
+          categoriesSelected={categoriesSelected}
+          handleQuery={handleCategoryQuery}
+        />
       </header>
       <main>
         {posts && <GalleryGrid posts={posts} morePosts={morePosts} />}
-        <LoadMore
-          handleMore={morePosts}
-          isLoading={isLoading}
-          error={isLoading}
-        />
+        {currentPage !== lastPage && (
+          <LoadMore
+            handleMore={morePosts}
+            isLoading={isLoading}
+            error={isLoading}
+          />
+        )}
       </main>
     </div>
   );

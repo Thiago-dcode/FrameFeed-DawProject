@@ -30,7 +30,7 @@ class PostFactory extends Factory
 
 
         //get a random image
-        $image = env('POST_IMAGES') . "/postFactoryImages/image-" . rand(0, count($images) - 1) . '.jpg';
+        $image = env('POST_IMAGES') . "/". $images[rand(0, count($images)-1)];
 
         //and check his size
         $imageSize = getimagesize($image);
@@ -38,7 +38,7 @@ class PostFactory extends Factory
 
 
         $title = fake()->unique()->sentence();
-        $slug = str_replace(' ', '-', $title);
+        $slug = str_replace(' ', '-', strtolower($title));
         return [
             'user_id' => User::all()->random()->id,
             'image' => $image,

@@ -22,19 +22,20 @@ use function Webmozart\Assert\Tests\StaticAnalysis\length;
 Route::get('/', function () {
 
 
-    //     $images = Storage::disk('local')
-    //     ->allFiles('public/postFactoryImages');
+        $images = Storage::disk('public')
+        ->allFiles('/postFactoryImages');
 
 
-
-    // //Renaming all the images
-    // foreach ($images as $i => $image) {
-
-
-    //     Storage::move($image, "postFactoryImages/image-{$i}.jpg");
-    // }
-
+       
     // dd($images);
+  
+
+    $image = env('POST_IMAGES') . "/". $images[rand(0, count($images)-1)];
+
+  
+    redirect($image);
+
+ 
 
 
     

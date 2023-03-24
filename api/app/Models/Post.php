@@ -10,7 +10,39 @@ class Post extends Model
 {
     use HasFactory, HasApiTokens;
     protected $guarded = [];
-    protected $with = ['author', 'likes'];
+    protected $with = ['author', 'likes', 'categories'];
+    public function scopeFilter($query, array $filters)
+    {
+
+
+
+        $query->when(
+            $filters['search'] ?? false,
+            fn ($query, $search) =>
+            $query->where(fn ($query) =>
+            $query->where('title', 'like', "%" . $search . "%")
+                ->orWhere('body', 'like', "%" . $search . "%"))
+
+        );
+        // $query->when(
+        //     $filters['category'] ?? false,
+        //     function ($query, $category) {
+        //     $query->whereHas('categories', function ($query) use($category){
+        //             $query->whereIn('name', $category);
+
+        //         });
+        //     }
+        // );
+        $query->when(
+            $filters['category'] ?? false,
+            function ($query, $categories) {
+                $query->whereHas('categories', function ($query) use ($categories) {
+                    $query->whereIn('name', $categories);
+                }, '=', count($categories));
+            }
+
+        );
+    }
 
     public function categories()
     {

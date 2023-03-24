@@ -1,5 +1,6 @@
 
 import "./css/App.css";
+import "./css/Effects.css";
 import Home from "./views/Home";
 
 function App() {

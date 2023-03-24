@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+const Categories = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL+'/categories',
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
 });
 
-export default api;
+export default Categories;

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Category;
 use App\Traits\HttpResponses;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
@@ -16,9 +18,11 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    
+
     {
-        $posts = Post::latest()->paginate(9);
+
+
+        $posts = Post::latest()->filter(request()->query())->paginate(9);
 
         return response()->json($posts);
     }
@@ -29,17 +33,36 @@ class PostController extends Controller
     public function create()
     {
 
-        $title = fake()->unique()->sentence();
-        $slug = str_replace(' ', '-', $title);
+
+        $images = Storage::disk('public')
+            ->allFiles('/postFactoryImages');
+
+
+
+
+        //get a random image
+        $image = env('POST_IMAGES') . "/" . $images[rand(0, count($images) - 1)];
+
+        //and check his size
+        $imageSize = getimagesize($image);
+
         $post = Post::create([
+
             'user_id' => User::all()->random()->id,
-            'image' =>  env('POST_IMAGES') . "/postImages/1.jpg",
-            'title' => $title,
-            'slug' => $slug,
+            'title' => 'This title has the letter j',
+            'slug' => 'this-title-has-the-letter-j',
+            'image' => $image,
+            'image_shape' => $imageSize[0] > $imageSize[1] ? 'horizontal' : 'vertical',
             'excerpt' => fake()->sentence(),
             'body' => implode('. ', fake()->paragraphs()),
+
         ]);
-        
+
+        $post->categories()->attach(Category::all()->random(rand(2, 7))->unique()->pluck('id')->toArray());
+
+
+
+
         return response()->json($post);
     }
 
