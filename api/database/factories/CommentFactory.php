@@ -21,7 +21,7 @@ class CommentFactory extends Factory
         return [
             'user_id' => User::all()->random()->id,
             'post_id' => Post::all()->random()->id,
-            'comment' => fake()->sentence()
+            'comment' => fake()->paragraph()
 
 
         ];

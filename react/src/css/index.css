@@ -5,8 +5,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 body {
+  width: 100%;
   background-color: var(--dark);
   display: flex;
   flex-direction: column;
@@ -21,4 +23,13 @@ height: 100%;
 }
 #root{
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    
+}
+a{
+  text-decoration: none;
 }

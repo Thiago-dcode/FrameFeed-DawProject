@@ -22,24 +22,21 @@ use function Webmozart\Assert\Tests\StaticAnalysis\length;
 Route::get('/', function () {
 
 
-        $images = Storage::disk('public')
-        ->allFiles('/postFactoryImages');
+    $imageSize = getimagesize('http://localhost/DAW-PROJECT/api/public/storage/postFactoryImages/pic-1-5.jpg');
 
 
-       
-    // dd($images);
-  
 
-    $image = env('POST_IMAGES') . "/". $images[rand(0, count($images)-1)];
+    $imageShape = 'square';
 
-  
-    redirect($image);
+    if ($imageSize[0] > $imageSize[1]) $imageShape = 'horizontal';
+    elseif ($imageSize[0] < $imageSize[1]) $imageShape = 'vertical';
 
- 
+    dd($imageShape);
 
 
-    
-        
+
+
+
 
     return view('welcome');
 });

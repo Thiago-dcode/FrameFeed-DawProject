@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Comment;
 use App\Models\Category;
 use App\Traits\HttpResponses;
+use Laravel\Sanctum\HasApiTokens;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\CommentLike;
+use Database\Factories\CommentLikeFactory;
 
 class PostController extends Controller
 {
-    use HttpResponses;
+    use HttpResponses, HasApiTokens;
     /**
      * Display a listing of the resource.
      */
@@ -22,10 +26,22 @@ class PostController extends Controller
     {
 
 
-        $posts = Post::latest()->filter(request()->query())->paginate(9);
+        $posts = Post::withCount('likes')->filter(request()->query())->orderBy('likes_count','desc')->paginate(9);
 
         return response()->json($posts);
     }
+
+
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($slug)
+    {
+        $post = Post::withCount('likes')->where('slug',$slug)->first();
+        return response()->json($post);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -75,14 +91,6 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Post $post)
@@ -93,9 +101,9 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update()
     {
-        //
+        
     }
 
     /**

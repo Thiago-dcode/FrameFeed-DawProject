@@ -21,7 +21,7 @@ class CommentLikeFactory extends Factory
         return [
             'user_id' => User::all()->random()->id,
             'comment_id' => Comment::all()->random()->id,
-           
+
         ];
     }
 }

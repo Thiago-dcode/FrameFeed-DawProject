@@ -5,24 +5,23 @@
   --gold: #deb992;
 }
 
-.icon{
+.icon {
   cursor: pointer;
 }
 
 .home {
-  
-  margin-top: 2rem;
+  width: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   gap: 2rem;
-
-  max-width: 1100px;
-  margin: auto;
+  margin-top: 7rem;
 }
 .home header {
   width: 100%;
+  max-width: 1100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,7 +29,7 @@
   height: 100%;
   gap: 3rem;
 }
-.home header .search-input{
+.home header .search-input {
   margin-top: 3rem;
   width: 100%;
   gap: 0.5rem;
@@ -38,65 +37,59 @@
   flex-direction: column;
   align-items: center;
 }
-.home header .search-input  button{
+.home header .search-input button {
+  border-bottom-right-radius: 15px;
+  border-top-right-radius: 15px;
 
   border-style: none;
   outline: none;
-  
-
-
 }
 
-.home header .search-input .search{
-  
-  width: 56%;
+.home header .search-input .search {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   justify-content: left;
 }
-.home header .search-input .search button{
-
+.home header .search-input .search button {
   color: white;
   background-color: var(--green);
   padding: 0.5rem;
+  
   border: 1px solid white;
   
 }
-.home header .search-input .search p{
+.home header .search-input .search p {
   color: white;
   border-radius: 15px;
 }
-.home header .search-input form{
+.home header .search-input form {
   background-color: rgba(255, 255, 255, 0.1);
 
-  border-bottom-left-radius: 15px;
-  border-top-left-radius: 15px;
  
   border-radius: 16px;
   width: 60%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
   height: 50px;
 }
-.home header .search-input input {
+ .search-input input {
   padding: 2rem;
   font-size: 1.5rem;
   color: white;
   background-color: transparent;
   margin-left: 1rem;
   border-style: none;
+
   border: none;
   outline-style: none;
   height: 100%;
   width: 100%;
- 
-  
 }
-.home header .search-input .icon-div {
+.search-input .icon-div {
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -104,20 +97,18 @@
   justify-self: end;
   height: 100%;
   background-color: var(--green);
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+ 
   width: 15%;
-  
 }
 
-.home header .search-input .icon-div .icon {
+.search-input .icon-div .icon {
   width: 110%;
   height: 60%;
+  max-height: 40%;
 }
-.home header .search-input .icon-div .icon:active {
+.search-input .icon-div .icon:active {
   transform: scale(90%);
 }
-
 
 .home header .search-categories {
   height: 100%;
@@ -142,19 +133,19 @@
   width: 100%;
   border-top: 2px solid white;
 }
-.home header .search-categories .categories-selected{
+.home header .search-categories .categories-selected {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
   gap: 0.3rem;
-  justify-content:flex-start;
+  justify-content: flex-start;
   margin-bottom: 0.5rem;
 }
-.home header .search-categories .categories-selected button{
-  background-color:#e7ccb0;
+.home header .search-categories .categories-selected button {
+  background-color: #e7ccb0;
   color: var(--dark);
 }
-.home header  button {
+.home header .search-categories button {
   color: white;
   cursor: pointer;
   text-align: center;
@@ -183,7 +174,8 @@
   margin: 0 auto;
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  max-width: 1350px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-auto-rows: 350px;
 
   grid-auto-flow: dense;
@@ -197,7 +189,7 @@
   border: var(--gold) 3px solid;
   width: 100%;
   height: 100%;
-  position: relative;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -238,20 +230,19 @@
   display: flex;
   justify-content: space-between;
 }
-.post-card .like-component {
+.like-component {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
-.card-tall {
+.vertical {
   grid-row: span 2 / auto;
 }
 
-.card-wide {
+
+.horizontal {
   grid-column: span 2 / auto;
 }
-
-
 
 @keyframes top-down {
   from {
@@ -275,22 +266,22 @@
   }
 }
 
-@media (max-width: 560px) {
-  .card-tall {
+@media (max-width: 750px) {
+  .vertical {
     grid-row: span 1;
   }
-  .card-wide {
+  .horizontal{
     grid-column: span 1;
+  }
+  .home header{
+   width: 130%
   }
 }
 
-
-.home main .icon{
+.home main .icon {
   width: 40px;
   height: 30px;
   padding: 1rem;
 }
 
 /* HEADER SEARCH */
-
-

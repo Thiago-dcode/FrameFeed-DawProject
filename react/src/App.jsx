@@ -1,12 +1,16 @@
 
-import "./css/App.css";
-import "./css/Effects.css";
-import Home from "./views/Home";
+
+import NavBar from "./components/NavBar";
+import Post from "./views/Post";
 
 function App() {
- 
+
+  
   return (
-    <Home/>
+    <>
+      <NavBar />
+      <Post />
+    </>
   );
 }
 

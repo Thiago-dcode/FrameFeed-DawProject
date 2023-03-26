@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\SessionController;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +26,12 @@ use Illuminate\Support\Facades\Storage;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/users', [UserController::class, 'index']);
 Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{post:slug}', [PostController::class, 'show']);
+Route::get('/posts/post/create', [PostController::class, 'create']);
+Route::get('/posts/post/update', [PostController::class, 'update']);
 
-Route::get('/posts/create', [PostController::class, 'create']);
+Route::get('/categories', [CategoryController::class, 'index']);
 
-Route::get('/categories',[CategoryController::class, 'index']);
-
-Route::post('/login',[SessionController::class,'store']);
+Route::post('/login', [SessionController::class, 'store']);

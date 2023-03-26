@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart as lightHeart } from "@fortawesome/free-regular-svg-icons";
-
+import Likes from "./Likes";
+import { NavLink } from "react-router-dom";
 export default function PostCard({ post }) {
   const [isMouseOver, setIsMouseOver] = useState(false);
   return (
-    <article
+    <NavLink
       onMouseLeave={() => setIsMouseOver(false)}
       onMouseOver={() => setIsMouseOver(true)}
       style={{ backgroundImage: `url(${post.image})` }}
-      className={`post-card ${
-        post.image_shape === "vertical" ? "card-tall" : "card-wide"
-      }`}
+      className={`post-card ${post.image_shape}`}
+      to={`/post/${post.slug}`}
     >
       <div
         style={{
@@ -20,10 +18,8 @@ export default function PostCard({ post }) {
         className={`author-like`}
       >
         <h3>@{post.author.username}</h3>
-        <div className="like-component">
-          <FontAwesomeIcon icon={lightHeart} />
-          <p>{post.likes.length}</p>
-        </div>
+
+        <Likes className={"like-component"} numLikes={post.likes_count} />
       </div>
 
       <div
@@ -34,6 +30,6 @@ export default function PostCard({ post }) {
       >
         <h2>{post.title}</h2>
       </div>
-    </article>
+    </NavLink>
   );
 }

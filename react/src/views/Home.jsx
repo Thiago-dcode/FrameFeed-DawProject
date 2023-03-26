@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import Posts from "../api/Posts";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass as lupa } from "@fortawesome/free-solid-svg-icons";
+import SearchInput from "../components/SearchInput";
 import SearchByCategory from "../components/SearchByCategory";
 import GalleryGrid from "../components/GalleryGrid";
 import LoadMore from "../components/LoadMore";
@@ -129,16 +128,11 @@ export default function Home() {
               <button onClick={() => setSearch("")}>{search}</button>
             </div>
           )}
-          <form onSubmit={(e) => handleSearch(e)} className="form">
-            <input ref={inputRef} type="text" placeholder="Type something" />
-            <button type="submit" className="icon-div">
-              <FontAwesomeIcon
-                className="icon"
-                icon={lupa}
-                style={{ color: "#ffffff" }}
-              />
-            </button>
-          </form>
+          <SearchInput
+            handleSearch={handleSearch}
+            inputRef={inputRef}
+            placeholder={"Type something"}
+          />
         </div>
 
         <SearchByCategory

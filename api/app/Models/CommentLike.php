@@ -18,6 +18,6 @@ class CommentLike extends Model
     public function comment()
     {
 
-        return $this->belongsTo(Comment::class);
+        return $this->belongsTo(Comment::class)->withCount('likes')->orderBy('likes_count', 'desc');
     }
 }

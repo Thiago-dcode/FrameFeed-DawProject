@@ -17,7 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-        protected $guarded = [];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -37,4 +37,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when(
+            $filters['user'] ?? false,
+            fn ($query, $user) =>
+            $query->where('username', 'like', "%" . $user . "%")
+        );
+    }
 }

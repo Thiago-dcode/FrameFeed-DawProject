@@ -8,7 +8,9 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Comment;
+use App\Models\CommentLike;
 use App\Models\PostLike;
+use Database\Factories\CommentLikeFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,11 +21,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(50)->create();
-        Post::factory(400)->create();
+        $users = User::factory(50)->create();
+
+        foreach ($users as $user) {
+            $user->update(['avatar' => 'https://i.pravatar.cc/40?u=' . $user->id]);
+        }
+        $posts = Post::factory(400)->create();
 
         //categories:
-        $categoriesToCreate = ['landscape', 'portrait', 'aerial', 'cityscape', 'street', 'fauna', 'flora', 'flowers', 'people', 'abstract', 'lifestyle', 'commercial', 'adventure', 'aesthetic', 'architectural', 'astrophotography', 'automtive', 'black&white', 'conceptual', 'contemporary', 'documentary', 'film', 'fantasy', 'analog', 'fine-art', 'food', 'macro', 'minimalist', 'monochrome', 'urbex', 'long-exposure', 'pet', 'photojournalism', 'product', 'real-state', 'seascape', 'self-portrait', 'winter', 'summer', 'spring', 'autumn', 'sports', 'travel', 'underwater', 'weather', 'wildlife','snow'];
+        $categoriesToCreate = ['landscape', 'portrait', 'aerial', 'cityscape', 'street', 'fauna', 'flora', 'flowers', 'people', 'abstract', 'lifestyle', 'commercial', 'adventure', 'aesthetic', 'architectural', 'astrophotography', 'automtive', 'black&white', 'conceptual', 'contemporary', 'documentary', 'film', 'fantasy', 'analog', 'fine-art', 'food', 'macro', 'minimalist', 'monochrome', 'urbex', 'long-exposure', 'pet', 'photojournalism', 'product', 'real-state', 'seascape', 'self-portrait', 'winter', 'summer', 'spring', 'autumn', 'sports', 'travel', 'underwater', 'weather', 'wildlife', 'snow'];
+
 
         foreach ($categoriesToCreate as $category) {
 
@@ -31,20 +38,26 @@ class DatabaseSeeder extends Seeder
         }
 
 
-        foreach (Post::all() as  $post) {
+        foreach ($posts as  $post) {
 
             //seeding pivot table
             $post->categories()->attach(Category::all()->random(rand(2, 7))->unique()->pluck('id')->toArray());
 
             //seeding post like table
-            PostLike::factory(rand(20, 150))->create([
+            PostLike::factory(rand(50, 120))->create([
                 'post_id' => $post->id,
             ]);
 
             //Seeding comment for each post
-            Comment::factory(rand(5, 15))->create([
+            $comments =  Comment::factory(rand(5, 8))->create([
                 'post_id' => $post->id,
             ]);
+            //seeding comment like
+            foreach ($comments as $comment) {
+                CommentLike::factory(rand(6, 20))->create([
+                    'comment_id' => $comment->id
+                ]);
+            }
         }
     }
 }

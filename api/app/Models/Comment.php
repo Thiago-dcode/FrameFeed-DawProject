@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Comment extends Model
 {
     use HasFactory,HasFactory;
+    protected $with = ['author', 'likes'];
 
     protected $guarded = [];
 
@@ -25,6 +26,6 @@ class Comment extends Model
     public function likes()
     {
 
-        return $this->hasMany(PostLike::class);
+        return $this->hasMany(CommentLike::class);
     }
 }
