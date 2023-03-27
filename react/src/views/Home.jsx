@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import Posts from "../api/Posts";
-
+import Loading from "../components/Loading";
 import SearchInput from "../components/SearchInput";
 import SearchByCategory from "../components/SearchByCategory";
 import GalleryGrid from "../components/GalleryGrid";
@@ -120,7 +120,7 @@ export default function Home() {
 
   return (
     <div className="home">
-      <header>
+      <header className="home-header">
         <div className="search-input">
           {search && (
             <div className="search">
@@ -142,6 +142,7 @@ export default function Home() {
         />
       </header>
       <main>
+        {!posts && <Loading/>}
         {posts && <GalleryGrid posts={posts} morePosts={morePosts} />}
         {currentPage !== lastPage && (
           <LoadMore

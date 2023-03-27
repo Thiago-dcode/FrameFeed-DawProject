@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasFactory, HasApiTokens;
     protected $guarded = [];
-    protected $with = ['author', 'comments', 'categories'];
+    protected $with = ['author', 'comments', 'categories','likes'];
     public function scopeFilter($query, array $filters)
     {
 

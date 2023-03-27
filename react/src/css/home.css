@@ -18,8 +18,9 @@
   justify-content: space-around;
   gap: 2rem;
   margin-top: 7rem;
+  margin-bottom: 2rem;
 }
-.home header {
+.home .home-header {
   width: 100%;
   max-width: 1100px;
   display: flex;
@@ -29,7 +30,7 @@
   height: 100%;
   gap: 3rem;
 }
-.home header .search-input {
+.home .home-header .search-input {
   margin-top: 3rem;
   width: 100%;
   gap: 0.5rem;
@@ -273,7 +274,7 @@
   .horizontal{
     grid-column: span 1;
   }
-  .home header{
+  .home .home-header{
    width: 130%
   }
 }

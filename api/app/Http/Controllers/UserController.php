@@ -15,4 +15,11 @@ class UserController extends Controller
  
         return response()->json($users);
     }
+    public function show($username){
+       
+        $user = User::with('posts')->where('username', $username)->first();
+
+        return response()->json($user);
+
+    }
 }

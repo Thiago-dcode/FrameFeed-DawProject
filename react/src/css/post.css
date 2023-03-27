@@ -232,6 +232,7 @@ flex-direction: column;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  margin-bottom: 2rem;
 }
 .comments-section article .user-comment .comment {
   font-size: 1.2rem;
@@ -244,4 +245,15 @@ flex-direction: column;
   display: flex;
   gap: 1rem;
   margin-right: 1rem;
+}
+
+.post-edit-delete{
+width: 100%;
+max-width: 1300px;
+  display:  flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+
+
 }

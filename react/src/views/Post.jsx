@@ -3,29 +3,33 @@ import { useParams } from "react-router-dom";
 import Posts from "../api/Posts";
 import Likes from "../components/Likes";
 import UserLink from "../components/UserLink";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import DropDownMenu from "../components/DropDownMenu";
+
+import Loading from "../components/Loading";
+import EditDelete from "../components/EditDelete";
 
 export default function Post() {
   const { slug } = useParams();
   const [post, setPost] = useState({});
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
-  const [isActive, SetIsActive] = useState(false);
 
   const getPost = async (post) => {
     try {
       setIsPending(true);
       const response = await Posts.get(post);
 
-      console.log(response.data);
+      
       setPost(response.data);
     } catch (error) {
+      console.log(error);
       setError(error);
     } finally {
       setIsPending(false);
     }
+  };
+
+  const handleDelete = () => {
+   
   };
   useEffect(() => {
     getPost(`/${slug}`);
@@ -33,21 +37,10 @@ export default function Post() {
 
   return (
     <>
-      {post && post.likes_count && post.author && (
+      {post && (
         <div className="home post">
-          <DropDownMenu
-            Icon={
-              <FontAwesomeIcon className="icon" icon={faEllipsis} style={{ color: "#ffffff" }} />
-            }
-            elements={[
-              {
-                content: "Edit post",
-                url: `/posts/${post.slug}/edit`,
-                isDelete: false,
-              },
-              { content: "delete post", url: `/posts/${post.slug}/` },
-            ]}
-          />
+          {isPending && <Loading />}
+
           <header className="title">
             <h1>{post.title}</h1>
           </header>
@@ -75,44 +68,62 @@ export default function Post() {
               <p>{post.body}</p>
             </div>
           </main>
-          <section className="comments">
-            <form action="">
-              <div className="avatar-input">
-                <div className="avatar">
-                  <img src={post.author.avatar} alt="" />
+          {post.author && post.comments && (
+            <section className="comments">
+              <form action="">
+                <div className="avatar-input">
+                  <div className="avatar">
+                    <img src={post.author.avatar} alt="" />
+                  </div>
+                  <div className="input">
+                    <input
+                      type="text"
+                      placeholder={`Add a comment to a ${post.author.username} post.`}
+                    />
+                  </div>
                 </div>
-                <div className="input">
-                  <input
-                    type="text"
-                    placeholder={`Add a comment to a ${post.author.username} post.`}
-                  />
-                </div>
-              </div>
 
-              <button>Comment</button>
-            </form>
-            <div className="comments-section">
-              {post.comments &&
-                post.comments.map((comment, i) => {
-                  return (
-                    <article key={i} className="">
-                      <div className="user-comment">
-                        {comment.author.avatar && (
-                          <UserLink user={comment.author} />
+                <button>Comment</button>
+              </form>
+              <div className="comments-section">
+                {post.comments &&
+                  post.comments.map((comment, i) => {
+                    return (
+                      <article key={i} className="">
+                        <div className="user-comment">
+                          {comment.author.avatar && (
+                            <UserLink user={comment.author} />
+                          )}
+                          <p className="comment">{comment.comment}</p>
+                        </div>
+                        {comment && (
+                          <Likes
+                            className={"comment-like"}
+                            numLikes={comment.likes.length}
+                          />
                         )}
-                        <p className="comment">{comment.comment}</p>
-                      </div>
-                      {comment && (
-                        <Likes
-                          className={"comment-like"}
-                          numLikes={comment.likes.length}
-                        />
-                      )}
-                    </article>
-                  );
-                })}
-            </div>
-          </section>
+                      </article>
+                    );
+                  })}
+              </div>
+            </section>
+          )}
+          {post && !isPending && (
+            <EditDelete
+              className={"post-edit-delete"}
+              edit={{
+                content: "Edit post",
+                url: {
+                  url: `/posts/${slug}/edit`,
+                 
+                },
+              }}
+              del={{
+                content: "Delete",
+                method: handleDelete,
+              }}
+            />
+          )}
         </div>
       )}
     </>

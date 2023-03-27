@@ -4,6 +4,8 @@ import Home from "../views/Home";
 import NotFound from "../views/NotFound";
 import Post from "../views/Post";
 import User from "../views/User";
+import PostCreate from "../views/PostCreate";
+import PostEdit from "../views/PostEdit";
 
 export const router = createBrowserRouter([
   {
@@ -12,16 +14,24 @@ export const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       {
-       index: true,
+        index: true,
         element: <Home />,
       },
 
       {
-        path: "/post/:slug",
+        path: "/posts/:slug",
         element: <Post />,
       },
       {
-        path: "/user",
+        path: "/posts/create",
+        element: <PostCreate />,
+      },
+      {
+        path: "/posts/:slug/edit",
+        element: <PostEdit />,
+      },
+      {
+        path: "/users/:username",
         element: <User />,
       },
     ],

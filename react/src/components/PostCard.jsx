@@ -9,7 +9,7 @@ export default function PostCard({ post }) {
       onMouseOver={() => setIsMouseOver(true)}
       style={{ backgroundImage: `url(${post.image})` }}
       className={`post-card ${post.image_shape}`}
-      to={`/post/${post.slug}`}
+      to={`/posts/${post.slug}`}
     >
       <div
         style={{
@@ -17,9 +17,9 @@ export default function PostCard({ post }) {
         }}
         className={`author-like`}
       >
-        <h3>@{post.author.username}</h3>
+        <h3>{post.author.username}</h3>
 
-        <Likes className={"like-component"} numLikes={post.likes_count} />
+        <Likes className={"like-component"} numLikes={post.likes.length} />
       </div>
 
       <div
