@@ -31,9 +31,8 @@ Route::get('/users/{user:username}', [UserController::class, 'show']);
 
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{post:slug}', [PostController::class, 'show']);
-Route::get('/posts/post/create', [PostController::class, 'create']);
-Route::get('/posts/post/update', [PostController::class, 'update']);
 
 Route::get('/categories', [CategoryController::class, 'index']);
 
+Route::post('/register', [UserController::class, 'store']);
 Route::post('/login', [SessionController::class, 'store']);

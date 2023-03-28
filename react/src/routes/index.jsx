@@ -1,16 +1,19 @@
 import { createBrowserRouter } from "react-router-dom";
-import LayoutPublic from "../layout/LayoutPublic";
+import LayoutPrivate from "../layout/LayoutPrivate";
 import Home from "../views/Home";
 import NotFound from "../views/NotFound";
 import Post from "../views/Post";
 import User from "../views/User";
 import PostCreate from "../views/PostCreate";
 import PostEdit from "../views/PostEdit";
+import LayoutPublic from "../layout/LayoutPublic";
+import Register from "../views/Register";
+import Login from "../views/Login";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <LayoutPublic />,
+    element: <LayoutPrivate />,
     errorElement: <NotFound />,
     children: [
       {
@@ -36,4 +39,21 @@ export const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/",
+    element: <LayoutPublic />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        path: '/register',
+        element: <Register />,
+      },
+
+      {
+        path: "/login",
+        element: <Login />,
+      },
+    ]
+
+  }
 ]);

@@ -18,7 +18,6 @@ export default function Post() {
       setIsPending(true);
       const response = await Posts.get(post);
 
-      
       setPost(response.data);
     } catch (error) {
       console.log(error);
@@ -28,9 +27,7 @@ export default function Post() {
     }
   };
 
-  const handleDelete = () => {
-   
-  };
+  const handleDelete = () => {};
   useEffect(() => {
     getPost(`/${slug}`);
   }, [slug]);
@@ -113,10 +110,8 @@ export default function Post() {
               className={"post-edit-delete"}
               edit={{
                 content: "Edit post",
-                url: {
-                  url: `/posts/${slug}/edit`,
-                 
-                },
+
+                url: `/posts/${slug}/edit`,
               }}
               del={{
                 content: "Delete",
