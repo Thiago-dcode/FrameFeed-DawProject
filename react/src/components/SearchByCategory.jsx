@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Categories from "../api/Categories";
+import Api from "../api/Api";
 import LoadMore from "./LoadMore";
 export default function SearchByCategory({ title,categoriesSelected,handleQuery }) {
   const [categories, setCategories] = useState([]);
@@ -9,11 +9,11 @@ export default function SearchByCategory({ title,categoriesSelected,handleQuery 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const getCategories = async (url ='') => {
+  const getCategories = async (url ='/categories') => {
     try {
       
       setIsLoading(true);
-      const response = await Categories.get(url);
+      const response = await Api.get(url);
 
       setCategories([...categories, ...response.data.data]);
       setCurrentPage(response.data.current_page);
@@ -29,7 +29,7 @@ export default function SearchByCategory({ title,categoriesSelected,handleQuery 
       return;
     }
     const page = currentPage +1
-    getCategories("?page=" + page);
+    getCategories("/categories?page=" + page);
   };
 
   

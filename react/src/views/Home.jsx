@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import Posts from "../api/Posts";
+import Api from "../api/Api";
 import Loading from "../components/Loading";
 import SearchInput from "../components/SearchInput";
 import SearchByCategory from "../components/SearchByCategory";
@@ -26,7 +26,7 @@ export default function Home() {
     try {
       setIsLoading(true);
 
-      const response = await Posts.get(url);
+      const response = await Api.get(url);
 
       setPosts([...posts, ...response.data.data]);
       setCurrentPage(response.data.current_page);
@@ -70,7 +70,9 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getPosts();
+    const controller = new AbortController()
+    
+    getPosts('/posts');
   }, []);
 
   useEffect(() => {
@@ -113,9 +115,9 @@ export default function Home() {
       url += queryString[key];
     }
 
-    console.log(url);
+   
 
-    getPosts(url);
+    getPosts(`/posts${url}`);
   }, [queryString]);
 
   return (
@@ -142,7 +144,7 @@ export default function Home() {
         />
       </header>
       <main>
-        {!posts && <Loading/>}
+        {!posts && <Loading />}
         {posts && <GalleryGrid posts={posts} morePosts={morePosts} />}
         {currentPage !== lastPage && (
           <LoadMore

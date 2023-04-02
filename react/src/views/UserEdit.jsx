@@ -2,32 +2,31 @@ import React, { useEffect, useState } from "react";
 import Api from "../api/Api";
 import { useParams } from "react-router-dom";
 
-
 import Form from "../components/Form";
 import Input from "../components/Input";
 import FileInput from "../components/FileInput";
 import "../css/form.css";
 
 export default function PostEdit() {
-  const { slug } = useParams();
-  const [post, setPost] = useState({});
+  const { username } = useParams();
+  const [user, setUser] = useState({});
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
 
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [name, setName] = useState("");
+  const [_username, setUsername] = useState("");
   const [file, setFile] = useState(null);
 
-  const getPost = async (post, controller) => {
+  const getUser = async (post, controller) => {
     try {
       setIsPending(true);
       const { data } = await Api.get(post, {
         signal: controller.signal,
       });
-      setTitle(data.title);
-      setBody(data.body);
+      setName(data.name);
+      setUsername(data.username);
 
-      setPost(data);
+      setUser(data);
     } catch (error) {
       console.log(error);
       setError(error);
@@ -38,47 +37,44 @@ export default function PostEdit() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(title);
-    console.log(body);
+    console.log(name);
+    console.log(_username);
     console.log(file);
   };
 
   useEffect(() => {
     const controller = new AbortController();
-    getPost(`/posts/${slug}`, controller);
+    getUser(`/users/${username}`, controller);
 
     return () => controller.abort();
-  }, [slug]);
+  }, [username]);
   return (
     <Form
       style={{ top: "10%" }}
       handleSubmit={handleSubmit}
-      title={`Edit your post`}
+      title={`Edit your profile`}
       buttonText={"Update"}
       elements={[
         <Input
-          handleInput={setTitle}
-          name={"title"}
+          handleInput={setName}
+          name={"Name"}
           style={{ width: "500px" }}
-          value={title}
+          value={name}
         />,
         <FileInput
-        title={'Image'}
           prevImage={{
-            image: post.image,
-            shape: post.image_shape,
+            image: user.avatar,
+            shape: "avatar",
           }}
           handleFile={setFile}
         />,
         <Input
-          handleInput={setBody}
-          value={body}
-          name="description"
-          type="textarea"
+          handleInput={setUsername}
+          value={_username}
+          name="Username"
           style={{ width: "500px" }}
         />,
       ]}
     />
   );
 }
-

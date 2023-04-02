@@ -3,13 +3,26 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileImage, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-export default function FileInput({ post = null, handleFile }) {
+export default function FileInput({ title, prevImage = null, handleFile }) {
   const [image, setImage] = useState(null);
   const [fileName, setFileName] = useState("No selected file");
 
   return (
     <div id="image-file">
-      <div className="image-div">
+      <h2
+        style={{
+          textTransform: "capitalize",
+          fontSize: "1rem",
+        }}
+      >
+        {title}
+      </h2>
+      <div
+        style={{
+          flexDirection: image ? "column" : "row",
+        }}
+        className="image-div"
+      >
         <div
           onClick={() => {
             document.querySelector("#file-input").click();
@@ -41,11 +54,11 @@ export default function FileInput({ post = null, handleFile }) {
             </>
           )}
         </div>
-        {!image && post && (
+        {!image && prevImage && (
           <div id="previous">
             <p>Previous image</p>
-            <div className={"img " + post.shape}>
-              <img src={post.image} alt="" />
+            <div className={"img " + prevImage.shape}>
+              <img src={prevImage.image} alt="" />
             </div>
           </div>
         )}

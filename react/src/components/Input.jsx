@@ -4,7 +4,7 @@ export default function Input({
   name,
   content = name,
   type = "text",
-  valueInput = "",
+  value = "",
   handleInput,
   placeholder = "Your " + name,
   style = { width: "300px" },
@@ -22,7 +22,7 @@ export default function Input({
           id=""
           cols="30"
           rows="10"
-          value={valueInput}
+          value={value}
           placeholder={"Write your " + name}
         ></textarea>
       ) : (
@@ -35,7 +35,7 @@ export default function Input({
           name={name}
           placeholder={placeholder}
           type={type}
-          value={valueInput}
+          value={value}
         />
       )}
     </>

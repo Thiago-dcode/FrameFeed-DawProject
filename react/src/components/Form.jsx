@@ -12,15 +12,9 @@ export default function Form({
 }) {
   const [isHover, setIsHover] = useState(false);
 
-  setInterval(() => {
-    
-  }, 5000);
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
+
   return (
     <div style={style} className="div-form">
-    
       <h2
         style={{
           color: "white",
@@ -41,29 +35,38 @@ export default function Form({
             </div>
           );
         })}
-   
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <button
-              onMouseLeave={() => {
-                setIsHover(false);
-              }}
-              onMouseOver={() => {
-                setIsHover(true);
-              }}
-              type="submit"
-            >
-              {buttonText}
-            </button>
-          
-            { errors && <div className="errors" style={{color:'white'}}>
-        {errors &&
-          Object.entries(errors).map(([key, value]) => {
-            return (value.map((errorMessage,i) => {
-            
-              return (<ErrorField key={i} message={errorMessage} />);
-            }))
-          })}
-      </div>}
+
+        <div
+          className="btn-errors"
+          style={{ display: "flex", flexDirection: "column" }}
+        >
+          <button
+            onMouseLeave={() => {
+              setIsHover(false);
+            }}
+            onMouseOver={() => {
+              setIsHover(true);
+            }}
+            type="submit"
+          >
+            {buttonText}
+          </button>
+
+          {errors && (
+            <div className="errors" style={{ color: "white" }}>
+              {errors &&
+                Object.entries(errors).map(([key, value]) => {
+                
+                  if (!Array.isArray(value)) {
+                    return <ErrorField key={key} message={value.message} />;
+                  }
+                  return value.map((errorMessage, i) => {
+                    return <ErrorField key={i} message={errorMessage} />;
+                  });
+                })}
+            </div>
+          )}
+          {isPending && !errors && <Loading />}
         </div>
       </form>
     </div>

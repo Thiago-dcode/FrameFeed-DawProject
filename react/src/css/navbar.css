@@ -80,12 +80,12 @@ nav ul .search .list {
 
   max-height: 200px;
 }
-nav .user-link{
+nav .user-link {
   color: black;
 }
 .user-link {
   width: 100%;
-color: white;
+  color: white;
   text-transform: capitalize;
   display: flex;
   padding: 0.4rem;
@@ -93,7 +93,6 @@ color: white;
   align-items: center;
 }
 .user-link .avatar {
-  
   border: white 2px solid;
   border-radius: 50%;
   display: flex;
@@ -101,6 +100,7 @@ color: white;
 }
 
 .user-link img {
+  width: 40px;
   border-radius: 50%;
   object-fit: contain;
   object-position: center;
@@ -114,18 +114,48 @@ nav ul .search .list .match {
 
 nav ul .user-new-post {
   width: 15%;
+
   display: flex;
   justify-content: space-around;
   padding: 0.5rem;
 
   gap: 1rem;
 }
+.user-new-post .user {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user-new-post .user img {
+  width: 30px;
+  object-fit: contain;
+}
+.user-new-post .user .dropdown {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  top: 110%;
+  position: absolute;
+}
+.user-new-post .user .dropdown button {
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-size: 0.8rem;
+  background: none;
+}
 nav ul .user-new-post .icon {
   height: 25px;
 }
+.user-new-post a {
+  color: white;
+}
 
 @media (max-width: 550px) {
-  nav ul .search{
+  nav ul .search {
     margin-left: 0;
   }
 }

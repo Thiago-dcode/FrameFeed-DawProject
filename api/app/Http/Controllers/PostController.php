@@ -11,9 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\UpdatePostRequest;
-use App\Models\CommentLike;
-use Database\Factories\CommentLikeFactory;
+
 
 class PostController extends Controller
 {
@@ -26,7 +24,7 @@ class PostController extends Controller
     {
 
 
-        $posts = Post::withCount('likes')->filter(request()->query())->orderBy('likes_count','desc')->paginate(9);
+        $posts = Post::withCount('likes')->filter(request()->query())->orderBy('likes_count', 'desc')->paginate(9);
 
         return response()->json($posts);
     }
@@ -38,7 +36,7 @@ class PostController extends Controller
      */
     public function show($slug)
     {
-        $post = Post::withCount('likes')->where('slug',$slug)->first();
+        $post = Post::withCount('likes')->where('slug', $slug)->first();
         return response()->json($post);
     }
 
@@ -90,9 +88,7 @@ class PostController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(Post $post)
     {
         //
@@ -103,7 +99,6 @@ class PostController extends Controller
      */
     public function update()
     {
-        
     }
 
     /**
@@ -111,6 +106,12 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+
+        if ($post) {
+            $post->delete();
+            return response()->json([
+                'message' => 'The post was deleted successfully',
+            ]);
+        }
     }
 }

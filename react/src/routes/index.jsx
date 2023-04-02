@@ -9,22 +9,40 @@ import PostEdit from "../views/PostEdit";
 import LayoutPublic from "../layout/LayoutPublic";
 import Register from "../views/Register";
 import Login from "../views/Login";
+import UserEdit from "../views/UserEdit";
+import LayoutDefault from "../layout/LayoutDefault";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <LayoutPrivate />,
+    element: <LayoutDefault />,
     errorElement: <NotFound />,
     children: [
       {
         index: true,
         element: <Home />,
       },
-
+      
       {
         path: "/posts/:slug",
         element: <Post />,
       },
+      
+      {
+        path: "/users/:username",
+        element: <User />,
+      },
+
+    ]
+
+  },
+  {
+    path: "/",
+    element: <LayoutPrivate />,
+    errorElement: <NotFound />,
+    children: [
+    
+
       {
         path: "/posts/create",
         element: <PostCreate />,
@@ -33,10 +51,12 @@ export const router = createBrowserRouter([
         path: "/posts/:slug/edit",
         element: <PostEdit />,
       },
+      
       {
-        path: "/users/:username",
-        element: <User />,
+        path: "/users/:username/edit",
+        element: <UserEdit />,
       },
+     
     ],
   },
   {
@@ -44,6 +64,7 @@ export const router = createBrowserRouter([
     element: <LayoutPublic />,
     errorElement: <NotFound />,
     children: [
+    
       {
         path: '/register',
         element: <Register />,
@@ -53,6 +74,7 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
       },
+
     ]
 
   }

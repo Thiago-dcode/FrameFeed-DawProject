@@ -21,7 +21,8 @@
   justify-content: start;
 }
 .home .user-header .image {
-  min-width: 150px;
+  
+  width: 160px;
   
   height: 140px;
   display: flex;
@@ -32,7 +33,7 @@
   border-radius: 50%;
   border: 4px solid var(--gold);
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 .home .user-header .image-info .info {
   width: 70%;

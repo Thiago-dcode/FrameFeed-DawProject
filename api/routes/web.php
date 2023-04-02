@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\Goto_;
 
+use function PHPUnit\Framework\fileExists;
 use function Webmozart\Assert\Tests\StaticAnalysis\length;
 
 /*
@@ -22,21 +23,8 @@ use function Webmozart\Assert\Tests\StaticAnalysis\length;
 Route::get('/', function () {
 
 
-    $imageSize = getimagesize('http://localhost/DAW-PROJECT/api/public/storage/postFactoryImages/pic-1-5.jpg');
 
-
-
-    $imageShape = 'square';
-
-    if ($imageSize[0] > $imageSize[1]) $imageShape = 'horizontal';
-    elseif ($imageSize[0] < $imageSize[1]) $imageShape = 'vertical';
-
-    dd($imageShape);
-
-
-
-
-
-
-    return view('welcome');
+    $image =   env('PUBLIC_STORAGE') . "/userAvatar/default.png";
+    fileExists($image);
+    dd($image);
 });

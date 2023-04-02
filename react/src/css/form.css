@@ -1,10 +1,10 @@
 .div-form {
-  top: 10%;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+ display: grid;
+ min-height: 100vh; 
+ place-content: center;
+gap: 1rem;
+ place-items: center;
+
 }
 
 .component-form {
@@ -27,6 +27,7 @@
 }
 
 .component-form .input-div {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,4 +82,29 @@
   width: 100px;
   height: 30px;
   cursor: pointer;
+}
+
+.component-form .btn-errors{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+
+}
+.errors {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.2rem;
+  border-radius: 15px;
+  border: 3px solid rgba(165, 42, 42, 1) ;
+  background-color: rgba(165, 42, 42, 0.7);
+  padding: 0.5rem;
+
+
+}
+.errors p{
+  color: white;
 }
