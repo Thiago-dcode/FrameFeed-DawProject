@@ -2,13 +2,13 @@ import React from "react";
 
 import Api from "../api/Api";
 import { useState, useEffect } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import EditDelete from "../components/EditDelete";
 import Loading from "../components/Loading";
 import GalleryGrid from "../components/GalleryGrid";
 export default function User() {
   const { username } = useParams();
-
+  const navigate = useNavigate();
   const [user, setUser] = useState({});
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
@@ -20,7 +20,14 @@ export default function User() {
       setIsProfile(false);
       setIsPending(true);
       const { data } = await Api.get(userUrl);
-
+ 
+      if (Object.keys(data).length === 0) {
+        console.log(data)
+        window.localStorage.removeItem("user");
+        window.localStorage.removeItem("ACCESS_TOKEN");
+        navigate('/')
+     
+      }
       setUser(data);
     } catch (error) {
       console.log(error.message);
@@ -29,8 +36,27 @@ export default function User() {
       setIsPending(false);
     }
   };
-  const handleDelete = () => {
-    console.log(username);
+  const deleteUser = async () => {
+    try {
+      const { data } = await Api.delete("/users/" + user.username);
+      console.log(data);
+      window.localStorage.removeItem("user");
+      window.localStorage.removeItem("ACCESS_TOKEN");
+      navigate('/')
+      window.location.reload();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  const handleDelete = (e, yesNo) => {
+    e.preventDefault();
+    console.log(yesNo);
+
+    if (yesNo) {
+      deleteUser();
+    }
+
+    console.log("Its working");
   };
   useEffect(() => {
     if (!user) return;
@@ -74,12 +100,16 @@ export default function User() {
             </div>
             {isProfile ? (
               <EditDelete
+                PopUpContent={
+                  "This action, will delete the user forever, continue?"
+                }
+                handleSubmit={handleDelete}
                 className={""}
                 edit={{
                   content: "Edit profile",
                   url: `/users/${username}/edit`,
                 }}
-                del={{ content: "Delete", method: handleDelete }}
+                del={{ content: "Delete" }}
               />
             ) : null}
           </header>

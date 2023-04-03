@@ -28,7 +28,7 @@ class UserController extends Controller
         $fields = $request->validate([
 
             'name' => 'required|min:3|max:255',
-            'username' => 'required|min:3|max:255|alpha_dash|unique:users',
+            'username' => 'required|min:3|max:30|alpha_dash|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|max:255|confirmed',
 
@@ -56,33 +56,53 @@ class UserController extends Controller
             'token' => $token
         ], 201);
     }
-    public function update(User $user, Request $request){
+    public function update(User $user, Request $request)
+    {
+
+
 
         $fields = $request->validate([
 
             'name' => 'required|min:3|max:255',
-            'username' => ['required', 'min:3', 'max:25', Rule::unique('users', 'username')->ignore($user->id)],
+            'username' => ['required', 'alpha_dash', 'min:3', 'max:25', Rule::unique('users', 'username')->ignore($user->id)],
             'avatar' => 'image',
-            'email' => ['required' ,'email', Rule::unique('users', 'email')->ignore($user->id)],          
-         
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+
 
         ]);
+        if (isset($fields['avatar'])) {
 
-        $fields['avatar' ]=   env('PUBLIC_STORAGE') . "/userAvatar/default.png";
+            $fields['avatar'] = $request->file('avatar')->store('userAvatar');
+            $fields['avatar'] = env('PUBLIC_STORAGE') . "/" . $fields['avatar'];
+        } else {
+            $fields['avatar'] =   env('PUBLIC_STORAGE') . "/userAvatar/default.png";
+        }
+        $user->update($fields);
 
-        $user = $user->update($fields);
-
-
-      
-
+        $user = User::where('username', $fields['username'])->first();
         $token = $user->createToken('user token')->plainTextToken;
+
 
         return response()->json([
             'message' => 'User updated successfully.',
             'user' => $user,
             'token' => $token
+
+
         ], 201);
     }
 
-    
+    public function destroy(User $user)
+    {
+
+        if ($user) {
+            $user->delete();
+
+
+            return response()->json([
+                'message' => $user->username . ', your account have been deleted',
+
+            ]);
+        }
+    }
 }

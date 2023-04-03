@@ -37,9 +37,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //Logout a user
     Route::post('/logout', [SessionController::class, 'destroy']);
     //Update a user
-    Route::patch('/users/{id}', [UserController::class, 'update']);
+    Route::patch('/users/{user:username}', [UserController::class, 'update']);
     //Delete a user
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::delete('/users/{user:username}', [UserController::class, 'destroy']);
 });
 
 // Public routes

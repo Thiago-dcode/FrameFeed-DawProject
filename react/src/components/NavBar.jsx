@@ -6,12 +6,11 @@ import Loading from "./Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
-
 import logo from "../assets/images/FrameFeed.png";
 import Api from "../api/Api";
 
 export default function NavBar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [user, setUser] = useState(
     JSON.parse(window.localStorage.getItem("user"))
   );
@@ -41,19 +40,18 @@ export default function NavBar() {
     try {
       const res = await Api.post("/logout");
       console.log(res);
-      window.localStorage.removeItem('user')
-      window.localStorage.removeItem('ACCESS_TOKEN')
-      setUser('')
-      setToken('')
-      navigate('/')
+      window.localStorage.removeItem("user");
+      window.localStorage.removeItem("ACCESS_TOKEN");
+      setUser("");
+      setToken("");
+      navigate("/");
     } catch (error) {
       console.log(error.message);
     }
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    logOut()
-    
+    logOut();
   };
 
   useEffect(() => {
@@ -112,6 +110,7 @@ export default function NavBar() {
                 style={{ color: "#ffffff" }}
               />
               <div className="user">
+                <div className="img">
                 <img
                   onClick={() => {
                     setShowDropdown(!showDropdown);
@@ -119,6 +118,7 @@ export default function NavBar() {
                   src={user.avatar}
                   alt=""
                 />
+                </div>
 
                 <div
                   style={{
