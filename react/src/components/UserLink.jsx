@@ -11,7 +11,7 @@ export default function UserLink({
     <NavLink
       onClick={onclick}
       className={"user-link " + className}
-      to={"/users/" + user.username}
+      to={"/" + user.username}
     >
       <div className="avatar">
         <img src={user.avatar} alt={user.username + " avatar"} />

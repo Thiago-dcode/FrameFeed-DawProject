@@ -35,7 +35,7 @@ class UserController extends Controller
 
         ]);
 
-        $avatar =   env('PUBLIC_STORAGE') . "/userAvatar/default.png";
+        $avatar = env('PUBLIC_STORAGE') . "/userAvatar/default.png";
 
         $user = User::create([
 

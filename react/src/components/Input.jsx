@@ -8,11 +8,12 @@ export default function Input({
   handleInput,
   placeholder = "Your " + name,
   style = { width: "300px" },
+  options = [],
 }) {
   return (
     <>
       <label htmlFor={name}>{content}</label>
-      {type === "textarea" ? (
+      {type === "textarea" && (
         <textarea
           style={style}
           onChange={({ target }) => {
@@ -25,7 +26,8 @@ export default function Input({
           value={value}
           placeholder={"Write your " + name}
         ></textarea>
-      ) : (
+      )}
+      {type !== "select" && type !== 'textarea' && (
         <input
           onChange={({ target }) => {
             handleInput(target.value);
@@ -37,6 +39,13 @@ export default function Input({
           type={type}
           value={value}
         />
+      )}
+      {type === "select" && (
+        <select name={name}>
+          {options.map((option) => {
+            return <option value={option.id}>{option.name}</option>;
+          })}
+        </select>
       )}
     </>
   );

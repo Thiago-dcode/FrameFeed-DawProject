@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import UserLink from "./UserLink";
 import Loading from "./Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import logo from "../assets/images/FrameFeed.png";
 import Api from "../api/Api";
@@ -104,14 +104,16 @@ export default function NavBar() {
         <li className="user-new-post">
           {user && token ? (
             <>
+            <NavLink to={`/${user.username}/create`}>
               <FontAwesomeIcon
                 className="icon post"
                 icon={faPlus}
                 style={{ color: "#ffffff" }}
               />
+              </NavLink>
               <div className="user">
                 <div className="img">
-                <img
+                <img style={{cursor: 'pointer'}}
                   onClick={() => {
                     setShowDropdown(!showDropdown);
                   }}
@@ -130,7 +132,7 @@ export default function NavBar() {
                     onClick={() => {
                       setShowDropdown(false);
                     }}
-                    to={`users/${user.username}`}
+                    to={`/${user.username}`}
                   >
                     Profile
                   </NavLink>

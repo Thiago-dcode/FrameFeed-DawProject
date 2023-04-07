@@ -59,7 +59,7 @@ export default function PostEdit() {
       if (!(data === undefined || data.length === 0)) {
         window.localStorage.setItem("user", JSON.stringify(data.user));
         window.localStorage.setItem("ACCESS_TOKEN", data.token);
-        return navigate("/users/" + data.user.username);
+        return navigate("/" + data.user.username);
       }
     } catch (error) {
       switch (error.response.status) {
@@ -116,6 +116,7 @@ export default function PostEdit() {
     <>
       {Object.keys(user).length > 0 ? (
         <Form
+        
           errors={error}
           isPending={isPending}
           style={{ top: "10%" }}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
@@ -12,8 +13,18 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        if ($request->has('all')) {
+
+            if ($request->query('all') == 1) {
+
+                $categories = Category::all();
+                return response()->json($categories);
+            }
+        }
+
         $categories = Category::latest()->paginate(10);
         return response()->json($categories);
     }

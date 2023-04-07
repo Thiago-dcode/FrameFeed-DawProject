@@ -29,7 +29,7 @@ class SessionController extends Controller
 
             if (!$user || !Hash::check($fields['password'], $user->password)) {
 
-                return response()->json(['message' => "Sorry, we can't find an account with this email address. "], 401);
+                return response()->json(['message' => "Sorry, we can't find an account with this username. "], 401);
             }
 
             $token = $user->createToken('user token')->plainTextToken;

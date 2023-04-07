@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
       },
       
       {
-        path: "/users/:username",
+        path: "/:username",
         element: <User />,
       },
 
@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
     
 
       {
-        path: "/posts/create",
+        path: "/:username/create",
         element: <PostCreate />,
       },
       {
@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
       },
       
       {
-        path: "/users/:username/edit",
+        path: "/:username/edit",
         element: <UserEdit />,
       },
      

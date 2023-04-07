@@ -1,7 +1,14 @@
 import React, { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-export default function EditDelete({ className, edit, del, handleSubmit, PopUpContent}) {
+export default function EditDelete({
+  className,
+  classNameForm,
+  edit,
+  del,
+  handleSubmit,
+  PopUpContent,
+}) {
   const [yesNo, setYesNo] = useState("");
   const [showForm, setShowForm] = useState(false);
   return (
@@ -30,6 +37,7 @@ export default function EditDelete({ className, edit, del, handleSubmit, PopUpCo
           display: showForm ? "flex" : "none",
         }}
         id="form-dropdown"
+        className={classNameForm}
       >
         <form
           onSubmit={(e) => {
@@ -38,8 +46,13 @@ export default function EditDelete({ className, edit, del, handleSubmit, PopUpCo
         >
           <p>{PopUpContent}</p>
           <div>
-            <button onClick={() =>{ setYesNo(true) 
-            setShowForm(false)}} className="yes">
+            <button
+              onClick={() => {
+                setYesNo(true);
+                setShowForm(false);
+              }}
+              className="yes"
+            >
               Yes
             </button>
             <button

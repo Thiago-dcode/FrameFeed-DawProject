@@ -40,14 +40,16 @@ export default function Home() {
   };
 
   // add or remove a category from categories Selected
-  const handleCategoryQuery = (categoryName, more = true) => {
-    if (more) setCategoriesSelected([...categoriesSelected, categoryName]);
-    else {
+  const handleCategoryQuery = (categoryName) => {
+    setPosts([])
+    if (categoriesSelected.includes(categoryName)) {
       const categoryRemoved = categoriesSelected.filter(
         (category) => category !== categoryName
       );
       setCategoriesSelected(categoryRemoved);
+      return;
     }
+    setCategoriesSelected([...categoriesSelected, categoryName]);
   };
 
   //fetch the next page of post.
@@ -70,9 +72,9 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const controller = new AbortController()
-    
-    getPosts('/posts');
+    const controller = new AbortController();
+
+    getPosts("/posts");
   }, []);
 
   useEffect(() => {
@@ -114,8 +116,6 @@ export default function Home() {
     for (const key in queryString) {
       url += queryString[key];
     }
-
-   
 
     getPosts(`/posts${url}`);
   }, [queryString]);

@@ -9,17 +9,19 @@ export default function FileInput({ title, prevImage = null, handleFile }) {
 
   return (
     <div id="image-file">
-      <h2
+      <p
         style={{
+         
           textTransform: "capitalize",
           fontSize: "1rem",
+          width: '100%'
         }}
       >
         {title}
-      </h2>
+      </p>
       <div
         style={{
-          flexDirection: image ? "column" : "row",
+          flexDirection: image || !prevImage ? "column" : "row",
         }}
         className="image-div"
       >
@@ -70,6 +72,7 @@ export default function FileInput({ title, prevImage = null, handleFile }) {
             <FontAwesomeIcon
               onClick={() => {
                 setFileName("No selected file");
+                handleFile(null)
                 setImage(null);
               }}
               icon={faTrashCan}

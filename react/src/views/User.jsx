@@ -107,7 +107,7 @@ export default function User() {
                 className={""}
                 edit={{
                   content: "Edit profile",
-                  url: `/users/${username}/edit`,
+                  url: `/${username}/edit`,
                 }}
                 del={{ content: "Delete" }}
               />

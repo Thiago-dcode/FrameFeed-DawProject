@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 export default function LinkBroken() {
   return (
-    <div
+    <div className="home"
       style={{
         color: "white",
         display: "flex",

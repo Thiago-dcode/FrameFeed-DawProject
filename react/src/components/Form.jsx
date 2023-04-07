@@ -14,7 +14,7 @@ export default function Form({
 
 
   return (
-    <div style={style} className="div-form">
+    <div style={style} className="home div-form">
       <h2
         style={{
           color: "white",
