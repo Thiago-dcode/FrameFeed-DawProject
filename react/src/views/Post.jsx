@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, NavLink, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Api from "../api/Api";
 import Likes from "../components/Likes";
 import UserLink from "../components/UserLink";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import Comments from "../components/Comments";
 import Loading from "../components/Loading";
 import EditDelete from "../components/EditDelete";
 import LinkBroken from "../components/LinkBroken";
@@ -14,7 +13,7 @@ export default function Post() {
   const [user, setUser] = useState(null);
   const { slug } = useParams();
   const [post, setPost] = useState({});
-  const [comment, setComment] = useState("");
+
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState("");
 
@@ -31,7 +30,7 @@ export default function Post() {
       setIsPending(false);
     }
   };
-  const deletePost = async () => {
+  const destroyPost = async () => {
     try {
       const { data } = await Api.delete("/posts/" + post.slug);
       console.log(data);
@@ -40,29 +39,13 @@ export default function Post() {
       console.log(error.message);
     }
   };
-  const storePost = async (formData) => {
-    try {
-      const { data } = await Api.post("/comment", formData);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+
   const handleDelete = (e, isYes) => {
     e.preventDefault();
     if (!isYes) return;
-    deletePost();
+    destroyPost();
   };
 
-  const handleComment = (e) => {
-    e.preventDefault();
-    if(!comment) return;
-    const formData = {
-      user_id: user.id,
-      post_id: post.id,
-      comment,
-    };
-    console.log(formData)
-  };
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
@@ -102,12 +85,15 @@ export default function Post() {
                   {post.author && (
                     <div className="user-like">
                       <UserLink user={post.author} />
-                      {post.likes_count && (
-                        <Likes
-                          className={"post-like"}
-                          numLikes={post.likes_count}
-                        />
-                      )}
+
+                      <Likes
+                        className={"post-like"}
+                        type={"posts"}
+                        id={post.id}
+                        _likes={post.likes
+                        }
+                        userId={user?.id}
+                      />
                     </div>
                   )}
                 </div>
@@ -115,72 +101,15 @@ export default function Post() {
                   <p>{post.body}</p>
                 </div>
               </main>
-              {post.author && post.comments && (
-                <section className="comments">
-                  {user ? (
-                    <form
-                      onSubmit={(e) => {
-                        handleComment(e);
-                      }}
-                    >
-                      <div className="avatar-input">
-                        <div className="avatar">
-                          <img src={user.avatar} alt="" />
-                        </div>
-                        <div className="input">
-                          <input
-                            onChange={({ target }) => {
-                              setComment(target.value);
-                            }}
-                            value={comment}
-                            type="text"
-                            placeholder={`Add a comment to a ${post.author.username} post.`}
-                          />
-                        </div>
-                      </div>
 
-                      <button>Comment</button>
-                    </form>
-                  ) : (
-                    <div style={{ color: "white" }}>
-                      <NavLink to={"/login"}>Login</NavLink>
-                      <p>or</p>
-                      <NavLink to={"/register"}>Register</NavLink>
-                      <p>to comment.</p>
-                    </div>
-                  )}
-                  <div className="comments-section">
-                    {post.comments &&
-                      post.comments.map((comment, i) => {
-                        return (
-                          <article key={i} className="">
-                            <div className="user-comment">
-                              {comment.author.avatar && (
-                                <UserLink user={comment.author} />
-                              )}
-                              <p className="comment">{comment.comment}</p>
-                            </div>
-                            <div>
-                              {comment && (
-                                <Likes
-                                  className={"comment-like"}
-                                  numLikes={comment.likes.length}
-                                />
-                              )}
-
-                              {user?.id === comment.author.id && (
-                                <FontAwesomeIcon
-                                  icon={faTrash}
-                                  style={{ color: "#ffffff" }}
-                                />
-                              )}
-                            </div>
-                          </article>
-                        );
-                      })}
-                  </div>
-                </section>
-              )}
+              {post ? (
+                <Comments
+                  author={post.author.username}
+                  postId={post.id}
+                  comments={post.comments}
+                  user={user}
+                />
+              ) : null}
 
               {user?.id === post.author.id && (
                 <EditDelete

@@ -81,7 +81,7 @@ export default function PostCreate() {
     const controller = new AbortController();
     const signal = controller.signal;
     setUserId(userLocalStorage.id);
-    getCategories(signal);
+  
     return () => controller.abort();
   }, []);
 
@@ -91,7 +91,7 @@ export default function PostCreate() {
       errors={error}
       style={{ top: "10%" }}
       handleSubmit={handleSubmit}
-      title={`Edit your post`}
+      title={`Create your post`}
       buttonText={"Create"}
       elements={[
         <Input

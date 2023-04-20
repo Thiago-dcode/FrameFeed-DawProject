@@ -10,7 +10,7 @@ class Post extends Model
 {
     use HasFactory, HasApiTokens;
     protected $guarded = [];
-    protected $with = ['author', 'comments', 'categories','likes'];
+    protected $with = ['author','categories','likes'];
     public function scopeFilter($query, array $filters)
     {
 
@@ -24,15 +24,7 @@ class Post extends Model
                 ->orWhere('body', 'like', "%" . $search . "%"))
 
         );
-        // $query->when(
-        //     $filters['category'] ?? false,
-        //     function ($query, $category) {
-        //     $query->whereHas('categories', function ($query) use($category){
-        //             $query->whereIn('name', $category);
-
-        //         });
-        //     }
-        // );
+    
         $query->when(
             $filters['category'] ?? false,
             function ($query, $categories) {

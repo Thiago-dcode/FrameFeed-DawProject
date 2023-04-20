@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import ErrorField from "./Error";
+import ErrorDiv from "./errorDiv";
 import Loading from "./Loading";
 export default function Form({
   style = null,
   title,
   elements,
   handleSubmit,
-  buttonText,
+buttonText,
   isPending = null,
   errors = null,
 }) {
@@ -52,20 +52,8 @@ export default function Form({
             {buttonText}
           </button>
 
-          {errors && (
-            <div className="errors" style={{ color: "white" }}>
-              {errors &&
-                Object.entries(errors).map(([key, value]) => {
-                
-                  if (!Array.isArray(value)) {
-                    return <ErrorField key={key} message={value.message} />;
-                  }
-                  return value.map((errorMessage, i) => {
-                    return <ErrorField key={i} message={errorMessage} />;
-                  });
-                })}
-            </div>
-          )}
+         <ErrorDiv
+         errors={errors}/>
           {isPending && !errors && <Loading />}
         </div>
       </form>

@@ -231,6 +231,7 @@ margin: auto;
   border-radius: 2px;
   padding: 1rem 1.4rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 .like-component {

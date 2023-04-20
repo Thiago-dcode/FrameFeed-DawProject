@@ -19,7 +19,7 @@ export default function PostCard({ post }) {
       >
         <h3>{post.author.username}</h3>
 
-        <Likes className={"like-component"} numLikes={post.likes.length} />
+        <Likes className={"like-component"} _likes= {post.likes} />
       </div>
 
       <div
