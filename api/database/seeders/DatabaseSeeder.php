@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         foreach ($users as $user) {
             $user->update(['avatar' => 'https://i.pravatar.cc/40?u=' . $user->id]);
         }
-        $posts = Post::factory(400)->create();
+        $posts = Post::factory(100)->create();
 
         //categories:
         $categoriesToCreate = ['landscape', 'portrait', 'aerial', 'cityscape', 'street', 'fauna', 'flora', 'flowers', 'people', 'abstract', 'lifestyle', 'commercial', 'adventure', 'aesthetic', 'architectural', 'astrophotography', 'automtive', 'black&white', 'conceptual', 'contemporary', 'documentary', 'film', 'fantasy', 'analog', 'fine-art', 'food', 'macro', 'minimalist', 'monochrome', 'urbex', 'long-exposure', 'pet', 'photojournalism', 'product', 'real-state', 'seascape', 'self-portrait', 'winter', 'summer', 'spring', 'autumn', 'sports', 'travel', 'underwater', 'weather', 'wildlife', 'snow'];
@@ -41,20 +41,20 @@ class DatabaseSeeder extends Seeder
         foreach ($posts as  $post) {
 
             //seeding pivot table
-            $post->categories()->attach(Category::all()->random(rand(2, 7))->unique()->pluck('id')->toArray());
+            $post->categories()->attach(Category::all()->random(rand(2, 4))->unique()->pluck('id')->toArray());
 
             //seeding post like table
-            PostLike::factory(rand(50, 120))->create([
+            PostLike::factory(rand(10, 60))->create([
                 'post_id' => $post->id,
             ]);
 
             //Seeding comment for each post
-            $comments =  Comment::factory(rand(5, 8))->create([
+            $comments =  Comment::factory(rand(2, 5))->create([
                 'post_id' => $post->id,
             ]);
             //seeding comment like
             foreach ($comments as $comment) {
-                CommentLike::factory(rand(6, 20))->create([
+                CommentLike::factory(rand(0, 10))->create([
                     'comment_id' => $comment->id
                 ]);
             }
